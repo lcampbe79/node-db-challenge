@@ -55,4 +55,16 @@ router.post('/:id/resources', (req, res) => {
     })
 })
 
+router.post('/:id/tasks', (req, res) => {
+  Projects.insertTask(req.params.id, req.body)
+    .then(task => {
+      task.completed = !!task.completed;
+      res.status(201).json(task)
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({message: "The task could not be created"})
+    })
+})
+
 module.exports = router;
