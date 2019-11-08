@@ -67,4 +67,23 @@ router.post('/:id/tasks', (req, res) => {
     })
 })
 
+router.get('/:id/tasks', (req, res) => {
+  Projects.findTasks(req.params.id)
+  .then(tasks => {
+    tasks = tasks.map((task) => {
+      return {
+        ...task,
+        completed: !!task.completed,
+      }
+    });
+    res.status(200).json(tasks)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json({
+      message: "The tasks could not be retrieved."
+    })
+  })
+})
+
 module.exports = router;
