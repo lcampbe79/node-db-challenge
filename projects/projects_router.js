@@ -4,6 +4,23 @@ const router = express.Router();
 
 const Projects = require('./projects_model');
 
+router.get('/', (req, res) => {
+  Projects.find()
+  .then(projects => {
+    projects = projects.map((project) => {
+      return {
+        ...project,
+        completed: !!project.completed
+      }
+    });
+    res.status(200).json(projects)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json({message: 'The projects could not be retrieved.'})
+  })
+})
+
 router.post('/', (req, res) => {
   Projects.insert(req.body)
   .then(project => {
