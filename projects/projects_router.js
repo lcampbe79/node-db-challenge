@@ -21,6 +21,17 @@ router.get('/', (req, res) => {
   })
 })
 
+router.get('/:id/resources', (req, res) => { 
+  Projects.findResource(req.params.id)
+  .then(resources => {
+    res.status(200).json(resources)
+  })
+  .catch((error) => {
+    console.log(error)
+    res.status(500).json({message: 'The resources could not be retrieved.'})
+  })
+})
+
 router.post('/', (req, res) => {
   Projects.insert(req.body)
   .then(project => {
@@ -31,6 +42,17 @@ router.post('/', (req, res) => {
     console.log(error)
     res.status(500).json({message: 'The project could not be created.'})
   })
+})
+
+router.post('/:id/resources', (req, res) => {
+  Projects.insertResource(req.params.id, req.body)
+    .then(resource => {
+      res.status(201).json(resource)
+    })
+    .catch((error) => {
+      console.log(error)
+      res.status(500).json({message: 'The resource could not be created.'})
+    })
 })
 
 module.exports = router;
